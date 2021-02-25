@@ -11,6 +11,8 @@ defmodule ImpowerElixir.HandleDb do
 
 
     data = Mongo.insert_one(conn, "user", %{MobileNo: mobile, token: token})
+    IO.puts "here is data"
+    IO.inspect data
     {:ok, data}
   end
 
