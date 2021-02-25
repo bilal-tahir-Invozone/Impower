@@ -8,7 +8,7 @@ defmodule ImpowerElixir.Application do
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
-      ImpowerElixir.Repo,
+      # ImpowerElixir.Repo,
       # Start the Telemetry supervisor
       ImpowerElixirWeb.Telemetry,
       # Start the PubSub system
