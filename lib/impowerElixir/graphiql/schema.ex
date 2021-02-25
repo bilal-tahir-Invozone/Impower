@@ -11,7 +11,7 @@ defmodule ImpowerElixir.GraphQL.Schema do
 
   object :users do
     field :mobile, :string
-    field :token, :string
+    field :token, :integer
   end
   object :validate_users do
     field :success, :boolean
@@ -33,18 +33,17 @@ defmodule ImpowerElixir.GraphQL.Schema do
       resolve fn(%{mobile: mobile}, _context) ->
         user_token = ImpowerElixir.Id.token
         users = ImpowerElixir.HandleDb.insert_data(mobile, user_token)
-        # users= Repo.insert! %Users{mobile: mobile, token: user_token }
         case users do
-          nil ->
+          {:ok, _} ->
+            {:ok, %{success: true}}
+          {:error , _} ->
             {:ok, %{success: false}}
-          _ ->
-            {:ok,%{success: true}}
         end
       end
     end
     field :vaildate_users, :validate_users do
       arg :mobile, non_null(:string)
-      arg :token, non_null(:string)
+      arg :token, non_null(:integer)
       resolve fn(%{mobile: mobile , token: token}, _context) ->
         # result = (
         # from u in Users,
