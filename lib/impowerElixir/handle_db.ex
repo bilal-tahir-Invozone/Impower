@@ -9,7 +9,15 @@ defmodule ImpowerElixir.HandleDb do
       pool_size: 5
       )
 
-    data = Mongo.insert_one(conn, "users", %{MobileNo: mobile, token: token})
+    cursor = Mongo.find(conn, "users", %{MobileNo: mobile})
+    data =
+    case cursor.docs do
+      [] ->
+        {:error , "data not found"}
+      _ ->
+        Mongo.update_one(conn, "users", %{MobileNo: mobile }, ["$set": [token: token]])
+      end
+
     {:ok, data}
   end
 
