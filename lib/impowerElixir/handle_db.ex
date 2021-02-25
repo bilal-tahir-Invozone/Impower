@@ -30,6 +30,12 @@ defmodule ImpowerElixir.HandleDb do
       pool_size: 5
       )
     cursor = Mongo.find(conn, "users", %{MobileNo: mobile, token: token})
+    case cursor.docs do
+      [] ->
+        {:error , "data not found"}
+      _ ->
+        Mongo.update_one(conn, "users", %{MobileNo: mobile, token: token}, ["$set": [Status: 1]])
+    end
     {:ok , cursor.docs}
 
   end

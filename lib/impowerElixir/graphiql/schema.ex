@@ -45,11 +45,6 @@ defmodule ImpowerElixir.GraphQL.Schema do
       arg :mobile, non_null(:string)
       arg :token, non_null(:integer)
       resolve fn(%{mobile: mobile , token: token}, _context) ->
-        # result = (
-        # from u in Users,
-        # where: u.mobile == ^mobile,
-        # where: u.token == ^token)
-        # |> Repo.one()
         {:ok , result} = ImpowerElixir.HandleDb.find_data(mobile, token)
         case result do
           [] ->
